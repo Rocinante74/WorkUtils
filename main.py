@@ -5,9 +5,9 @@ from watchfiles import run_process
 import time
 import csv
 
-# Open the CSV file with the `csv` module
+# Open the CSV file with the `csv` module to know where to copy files
 with open('project_dict.csv') as csvfile:
-    # Create a `DictReader` object from the CSV file
+    # Create a reader object from the CSV file
     reader = csv.reader(csvfile)
 
     # Create an empty dictionary
@@ -33,13 +33,16 @@ with open('project_dict.csv') as csvfile:
         destinations[number] = dirs
 
 # The path to the folder that we want to watch
-# folder_to_watch = "C:\\test"
 folder_to_watch = os.path.expanduser('~\Documents')
 
 
 def run_script():
+    # Add some sleep time to ensure the file is fully present
     time.sleep(5)
+
+    # get pdf files in the directory
     pdf_files = [f for f in os.listdir(folder_to_watch) if f.endswith(".pdf")]
+
     # Loop through the PDF files
     for pdf_file in pdf_files:
 
@@ -53,20 +56,24 @@ def run_script():
 
         # Construct the new file name
         new_file_name = timestamp + " - " + pdf_file
+
+        # Get the job number
         job_number = ""
         for job_numbers in destinations:
             if job_numbers in pdf_file:
                 job_number = job_numbers
+                break
         if not job_number:
             continue
 
+        # Use the job number to determine where the PDFs should go
         destination_folders = destinations[job_number]
 
-        # Check if the destination folders exist
+        # Check if the destination folders exist - Shouldn't hit this
         for folder in destination_folders:
             if not os.path.exists(folder):
                 print("The destination folder '%s' does not exist. Please check the path and try again." % folder)
-                return
+                continue
 
         # Copy the file to the destination folders
         for folder in destination_folders:
@@ -76,7 +83,7 @@ def run_script():
         os.remove(os.path.join(folder_to_watch, pdf_file))
 
 
-# Check if the folder exists
+# Check if the watched folder exists first
 if not os.path.exists(folder_to_watch):
     print("The folder to watch does not exist. Please check the path and try again.")
     exit()
