@@ -26,6 +26,12 @@ def run_script():
     pdf_files = [f for f in os.listdir(folder_to_watch) if f.endswith(".pdf")]
     # Loop through the PDF files
     for pdf_file in pdf_files:
+
+        # Ignore files with "DNC" to enable ignoring PDFs to be edited before copying
+        # Removing "DNC" will trigger another change in the folder, causing the file to be moved
+        if "DNC" in pdf_file:
+            continue
+
         # Get the current timestamp
         timestamp = datetime.now().strftime("%Y-%m-%d")
 
