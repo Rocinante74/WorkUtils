@@ -14,7 +14,23 @@ with open('project_dict.csv') as csvfile:
     destinations = {}
 
     for row in reader:
-        destinations[row[0]] = row[1:]
+        # Iterate through the csv file and add a "My Drive" location for personal backup
+        # Each row should be in this format:
+        # JobNumber,DirectoryToCopyTo,SecondDirectoryToCopyTo
+
+        number = row[0]
+        dirs = row[1:]
+
+        # Adding the "My Drive" folder + ensuring it exists
+        my_drive_path = "G:\\My Drive\\Projects\\" + number
+        if not os.path.exists(my_drive_path):
+            os.mkdir(my_drive_path)
+        my_drive_path = my_drive_path + "\\Prints"
+        if not os.path.exists(my_drive_path):
+            os.mkdir(my_drive_path)
+        dirs.append(my_drive_path)
+
+        destinations[number] = dirs
 
 # The path to the folder that we want to watch
 # folder_to_watch = "C:\\test"
