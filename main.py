@@ -71,13 +71,20 @@ def run_script():
 
         # Check if the destination folders exist - Shouldn't hit this
         for folder in destination_folders:
+            if not folder:
+                continue
             if not os.path.exists(folder):
                 print("The destination folder '%s' does not exist. Please check the path and try again." % folder)
                 continue
 
         # Copy the file to the destination folders
         for folder in destination_folders:
-            shutil.copy(os.path.join(folder_to_watch, pdf_file), os.path.join(folder, new_file_name))
+            if not folder:
+                continue
+            try:
+                shutil.copy(os.path.join(folder_to_watch, pdf_file), os.path.join(folder, new_file_name))
+            except:
+                print("Something went wrong copying to '%s'. Maybe close the file?" % folder)
 
         # Delete the original file
         os.remove(os.path.join(folder_to_watch, pdf_file))
