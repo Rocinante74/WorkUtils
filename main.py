@@ -142,6 +142,12 @@ class CopyRobot:
             if name in file_name:
                 file_name = file_name.replace(name, "")
 
+        versions = ["R21", "R22", "R23", "R24"]
+        for version in versions:
+            version_name = " - " + version
+            if version_name in file_name:
+                file_name = file_name.replace(version_name, "")
+
         timestamp = datetime.now().strftime("%Y-%m-%d")
         new_file_name = timestamp + " - " + file_name
 
