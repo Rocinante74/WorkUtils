@@ -135,6 +135,13 @@ class CopyRobot:
     def get_new_name(self, file_path):
         file_name = file_path.split("\\")[-1]
 
+        user_names = ["david-hood"]
+
+        for user_name in user_names:
+            name = "_" + user_name
+            if name in file_name:
+                file_name = file_name.replace(name, "")
+
         timestamp = datetime.now().strftime("%Y-%m-%d")
         new_file_name = timestamp + " - " + file_name
 
