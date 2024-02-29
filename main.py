@@ -126,11 +126,15 @@ class CopyRobot:
                 continue
             try:
                 shutil.copy(file, os.path.join(folder, self.get_new_name(file)))
+                print("Successfully copied '%s' to '%s'." % (self.get_new_name(file), folder))
 
-                # Delete the original file
-                os.remove(file)
             except:
-                print("Something went wrong copying to '%s'. Maybe close the file?" % folder)
+                break
+        try:
+            # Delete the original file
+            os.remove(file)
+        except:
+            pass
 
     def get_new_name(self, file_path):
         file_name = file_path.split("\\")[-1]
